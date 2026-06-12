@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Siyez Pastaneleri - Menü</title>
+    <style>
+        :root {
+            --bg-color: #111111;
+            --card-bg: #1a1a1a;
+            --accent-color: #D4AF37;
+            --text-color: #ffffff;
+            --text-muted: #aaaaaa;
+            --border-color: #2a2a2a;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.5;
+            padding-bottom: 60px;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 20px 20px 20px;
+            background: linear-gradient(to bottom, #000000, var(--bg-color));
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        header h1 {
+            color: var(--accent-color);
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* Sticky Kategori Menüsü */
+        .category-nav {
+            position: -webkit-sticky;
+            position: sticky;
+            top: 0;
+            background-color: rgba(17, 17, 17, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            overflow-x: auto;
+            white-space: nowrap;
+            scrollbar-width: none;
+            padding: 10px 0;
+        }
+
+        .category-nav::-webkit-scrollbar {
+            display: none;
+        }
+
+        .nav-container {
+            display: inline-flex;
+            padding: 0 15px;
+            gap: 10px;
+        }
+
+        .nav-item {
+            display: inline-block;
+            padding: 8px 16px;
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 20px;
+            background-color: var(--card-bg);
+            font-size: 0.9rem;
+            font-weight: 500;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .nav-item.active {
+            background-color: var(--accent-color);
+            color: #000000;
+            border-color: var(--accent-color);
+            font-weight: 600;
+        }
+
+        /* Menü İçerik Alanı */
+        .menu-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px 15px;
+        }
+
+        .category-section {
+            scroll-margin-top: 70px;
+            margin-bottom: 40px;
+        }
+
+        .category-title {
+            color: var(--accent-color);
+            font-size: 1.5rem;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        @media (min-width: 650px) {
+            .grid-container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        /* Ürün Kartı Tasarımı */
+        .product-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 16px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .product-card:active {
+            transform: scale(0.98);
+        }
+
+        .product-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 15px;
+            width: 100%;
+        }
+
+        .product-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .product-price {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            white-space: nowrap;
+        }
+
+        .product-description {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 8px;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Siyez Pastaneleri</h1>
+        <p>Menü</p>
+    </header>
+
+    <nav class="category-nav" id="categoryNav">
+        <div class="nav-container">
+            <a href="#kahvaltilar" class="nav-item active">Kahvaltılar</a>
+            <a href="#kahvalti-extra" class="nav-item">Kahvaltı Extra</a>
+            <a href="#menemenler" class="nav-item">Menemenler</a>
+            <a href="#yumurtalar" class="nav-item">Yumurta Ürünleri</a>
+            <a href="#omletler" class="nav-item">Omletler</a>
+            <a href="#aperatifler" class="nav-item">Aperatifler</a>
+            <a href="#tostlar" class="nav-item">Tostlar</a>
+            <a href="#durumler" class="nav-item">Dürümler</a>
+            <a href="#burgerler" class="nav-item">Burgerler</a>
+            <a href="#pizzalar" class="nav-item">Pizzalar</a>
+            <a href="#salatalar" class="nav-item">Salatalar</a>
+            <a href="#makarnalar" class="nav-item">Makarnalar</a>
+            <a href="#beyaz-etler" class="nav-item">Ana Yemek - Beyaz Et</a>
+            <a href="#kirmizi-etler" class="nav-item">Ana Yemek - Kırmızı Et</a>
+            <a href="#pideler" class="nav-item">Pideler</a>
+            <a href="#corbalar" class="nav-item">Çorbalar</a>
+            <a href="#borekler" class="nav-item">Börekler</a>
+            <a href="#pogacalar" class="nav-item">Poğaçalar</a>
+            <a href="#acmalar" class="nav-item">Açmalar</a>
+            <a href="#sandvicler" class="nav-item">Sandviçler</a>
+            <a href="#sutlu-tatlilar" class="nav-item">Sütlü Tatlılar</a>
+            <a href="#dilim-pastalar" class="nav-item">Dilim Pastalar</a>
+            <a href="#baklavalar" class="nav-item">Baklavalar</a>
+            <a href="#kurabiyeler" class="nav-item">Kurabiyeler</a>
+            <a href="#soguk-icecekler" class="nav-item">Soğuk İçecekler</a>
+            <a href="#sicak-icecekler" class="nav-item">Sıcak İçecekler</a>
+        </div>
+    </nav>
+
+    <div class="menu-container">
+
+        <section id="kahvaltilar" class="category-section">
+            <h2 class="category-title">🥐 Kahvaltılar</h2>
+            <div class="grid-container">
+                <div class="product-card">
+                    <div class="product-header">
+                        <span class="product-name">Serpme Kahvaltı</span>
+                        <span class="product-price">1200,00 ₺</span>
+                    </div>
+                    <div class="product-description">Örgü Peyniri, Kaşar Peyniri, Çeçil Peyniri, Ezine Beyaz Peyniri, Top Peynir, Reçel, Bal(Çiçek Balı), Kaymak, Tereyağı, Sarella Çikolata, Macar Salam, Izgara Sucuk, Çengelköy Salatalık Sosis-Patates Tava, Sigara Böreği, Tercihen(Menemen, Sucuklu Sahanda Yumurta). Sınırsız Çay ile servis edilir.</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header">
+                        <span class="product-name">Tek Kişilik Kahvaltı</span>
+                        <span class="product-price">600,00 ₺</span>
+                    </div>
+                    <div class="product-description">Kaşar Peyniri, Çeçil Peyniri, Ezine Beyaz Peyniri, Top Peynir, Reçel, Bal(Çiçek Balı), Tereyağı, Sarella Çikolata, Macar Salam, Siyah Zeytin, Yeşil Zeytin, Çanakkale Domates, Çengelköy Salatalık, Haşlanmış Yumurta, Su Böreği 2 Bardak Çay ile servis edilir.</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header">
+                        <span class="product-name">Express Kahvaltı</span>
+                        <span class="product-price">400,00 ₺</span>
+                    </div>
+                    <div class="product-description">Kaşar Peyniri, Ezine Beyaz Peyniri, Reçel, Bal(Çiçek Balı), Tereyağı, Sarella Çikolata, Siyah Zeytin, Yeşil Zeytin, Çanakkale Domates, Çengelköy Salatalık, Haşlanmış Yumurta, 1 Bardak Çay ile servis edilir.</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header">
+                        <span class="product-name">Simit Kahvaltı</span>
+                        <span class="product-price">250,00 ₺</span>
+                    </div>
+                    <div class="product-description">1 adet simit , domates, salatalık, zeytin, beyaz peynir, 1 dilim kaşar peynir, 1 dilim</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="kahvalti-extra" class="category-section">
+            <h2 class="category-title">➕ Kahvaltı Extra</h2>
+            <div class="grid-container">
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Kaşar Peyniri</span><span class="product-price">80,00 ₺</span></div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Beyaz Peynir</span><span class="product-price">80,00 ₺</span></div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Çeçil Peyniri</span><span class="product-price">80,00 ₺</span></div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Örgü Peyniri</span><span class="product-price">80,00 ₺</span></div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Top Peyniri</span><span class="product-price">80,00 ₺</span></div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Zeytin Çeşitleri</span><span class="product-price">80,00 ₺</span></div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Haşlanmış Yumurta</span><span class="product-price">80,00 ₺</span></div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Bal (Çiçek Balı)</span><span class="product-price">80,00 ₺</span></div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Pişi (2 Adet)</span><span class="product-price">200,00 ₺</span></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="menemenler" class="category-section">
+            <h2 class="category-title">🍅 Menemen Çeșitleri</h2>
+            <div class="grid-container">
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Sade Menemen</span><span class="product-price">250,00 ₺</span></div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Kaşarlı Menemen</span><span class="product-price">250,00 ₺</span></div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Sucuklu Menemen</span><span class="product-price">250,00 ₺</span></div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Kavurmalı Menemen</span><span class="product-price">300,00 ₺</span></div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Beyaz Peynirli Menemen</span><span class="product-price">250,00 ₺</span></div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Karışık Menemen</span><span class="product-price">300,00 ₺</span></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="yumurtalar" class="category-section">
+            <h2 class="category-title">🍳 Yumurta Ürünleri</h2>
+            <div class="grid-container">
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Tereyağlı Sahanda Yumurta</span><span class="product-price">250,00 ₺</span></div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Tereyağlı Sahanda Sucuklu Yumurta</span><span class="product-price">300,00 ₺</span></div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Tereyağlı Sahanda Peynirli Yumurta</span><span class="product-price">300,00 ₺</span></div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Tereyağlı Sahanda Kaşarlı Yumurta</span><span class="product-price">300,00 ₺</span></div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Tereyağlı Sahanda Kavurmalı Yumurta</span><span class="product-price">350,00 ₺</span></div>
+                    <div class="product-description">Kavurmalı omlet 2 yumurtadan, 150gr kavurma kaşar peyniri, yeşillik ile servis yapılır.</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="omletler" class="category-section">
+            <h2 class="category-title">🍳 Omlet Çeşitleri</h2>
+            <div class="grid-container">
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Sade Omlet</span><span class="product-price">200,00 ₺</span></div>
+                    <div class="product-description">Yeşillik, Patates</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Beyaz Peynirli Omlet</span><span class="product-price">250,00 ₺</span></div>
+                    <div class="product-description">Yeşillik, Patates</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Beyaz Peynirli Maydanozlu Omlet</span><span class="product-price">250,00 ₺</span></div>
+                    <div class="product-description">Yeşillik, Patates</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Kaşar Peynirli Omlet</span><span class="product-price">250,00 ₺</span></div>
+                    <div class="product-description">Yeşillik, Patates</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Mix Omlet</span><span class="product-price">300,00 ₺</span></div>
+                    <div class="product-description">Mantar, Sucuk, Yeşil Biber, Kırmızı Biber, Domates ve Kaşar içerir. Çanakkale Domates ve Çengelköy Salatalık ile söğüş servis edilir.</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Kavurmalı Omlet</span><span class="product-price">350,00 ₺</span></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="aperatifler" class="category-section">
+            <h2 class="category-title">🍟 Aperatifler</h2>
+            <div class="grid-container">
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Aburcubur Tabağı</span><span class="product-price">400,00 ₺</span></div>
+                    <div class="product-description">Çıtır Tavuk, Soğan Halkası, Baharatlı Patates Tavası, Mozerella Strik, Patates Kroket, Sigara Böreği, Kokteyl Sosis, chili sos ile servis edilir.</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Paçanga Böreği</span><span class="product-price">350,00 ₺</span></div>
+                    <div class="product-description">Pastırma ve kaşar peyniri ile hazırlanmış Paçanga Böreği Kiraz domates ve salatalık ile söğüş servis edilir.</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Çıtır Tavuk Pane</span><span class="product-price">350,00 ₺</span></div>
+                    <div class="product-description">Özel Pane Harcı ile kaplanmış tavuk parçaları baharatlanmış patates sweet chili sos ile servis edilir.</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Parmak Patates Porsiyon</span><span class="product-price">250,00 ₺</span></div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Elma Dilim Patates Porsiyon</span><span class="product-price">250,00 ₺</span></div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Sosis Tabağı</span><span class="product-price">300,00 ₺</span></div>
+                    <div class="product-description">(Patates ile servis edilir)</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Patso</span><span class="product-price">250,00 ₺</span></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tostlar" class="category-section">
+            <h2 class="category-title">🥪 Tost Çeşitleri</h2>
+            <div class="grid-container">
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Kaşarlı Tost</span><span class="product-price">300,00 ₺</span></div>
+                    <div class="product-description">Akdeniz yeşilliği, Kiraz domates, Baharatlı Patates ile servis edilir.</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Beyaz Peynirli Tost</span><span class="product-price">300,00 ₺</span></div>
+                    <div class="product-description">Akdeniz yeşilliği, Kiraz domates, Baharatlı Patates ile servis edilir.</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Sucuklu Kaşarlı Tost</span><span class="product-price">320,00 ₺</span></div>
+                    <div class="product-description">Akdeniz yeşilliği, Kiraz domates, Baharatlı Patates ile servis edilir.</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Ege Tost</span><span class="product-price">330,00 ₺</span></div>
+                    <div class="product-description">Tost ekmeği arasına mozerella peyniri, domates, pesto sos yanına patates kızartması, Kiraz Domates, Çengelköy Salatalık ile servis edilir.</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Çılgın Tost</span><span class="product-price">350,00 ₺</span></div>
+                    <div class="product-description">Tost ekmeği arasına sosis, sucuk, salam, kaşar peyniri, Siyah Zeytin yanında Baharatlı Patates, Kiraz domates, Çengelköy Salatalık ve sos ile servi edilir.</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Siyez Special Tost</span><span class="product-price">350,00 ₺</span></div>
+                    <div class="product-description">Özel Bazlama ekmeği arasına Kavurma, Kaşar peyniri, Cheddar Peyniri, Kiraz domates, Çengelköy Salatalık, Patates Tava ve sos ile servis edilir.</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Yengen Tost</span><span class="product-price">350,00 ₺</span></div>
+                    <div class="product-description">Ayvalık Tost ekmeği arasına, Kaşar peyniri, sucuk, cheddar peyniri, Domates yanında Kiraz Domates, salatalık, baharatlı patates ve sos ile servis edilir.</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Ayvalık Tost</span><span class="product-price">350,00 ₺</span></div>
+                    <div class="product-description">Tost Ekmeği Arasına Kaşar Peyniri, Sosis, Salam, Amerikan Salatası, Yanında Baharatlı Patates, Kiraz Domates, Çengelköy Salatalık ile servis edilir.</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="durumler" class="category-section">
+            <h2 class="category-title">🌯 Dürümler</h2>
+            <div class="grid-container">
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Tavuk Wrap</span><span class="product-price">450,00 ₺</span></div>
+                    <div class="product-description">Tortilla ekmeği arasında, kaşar peyniri ile sarılmış 130 Gr. Izgara julyen tavuk, renkli biberler, mantar, soğan yanında meksika baharatı ile panelenmiş patates ile servis edilir.</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Köfte Wrap</span><span class="product-price">500,00 ₺</span></div>
+                    <div class="product-description">Tortilla ekmeği arasında, kaşar peyniri ile sarılmış 130 Gr. Izgara kasap köfte, yeşillikler, domates, turşu, yanında baharatlı patates ile servis edilir.</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Etli Wrap</span><span class="product-price">600,00 ₺</span></div>
+                    <div class="product-description">Tortilla ekmeği arasında, kaşar peyniri ile sarılmış 130 Gr. Izgara julyen biftek parçaları, renkli biberler, mantar, soğan, özel baharatlanmış meksika biberleri, yanında baharatlı patates ile servis edilir.</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="burgerler" class="category-section">
+            <h2 class="category-title">🍔 Burgerler</h2>
+            <div class="grid-container">
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Klasik Burger</span><span class="product-price">450,00 ₺</span></div>
+                    <div class="product-description">Büyük boy burger ekmeği arasında el yapımı 130. gr. Burger köftesi, yeşillik, turşu, domates ve burger sos yanında patates tava ile servis edilir</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Cheese Burger</span><span class="product-price">500,00 ₺</span></div>
+                    <div class="product-description">Büyük boy burger ekmeği arasında el yapımı 130. gr. Burger köftesi, yeşillik, turşu, domates, çedar peyniri yanında patates tava ile servis edilir.</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Kumru Burger</span><span class="product-price">500,00 ₺</span></div>
+                    <div class="product-description">Büyük boy burger ekmeği arasında el yapımı 130. gr. sucuk, salam, sosis, kaşar peyniri, yeşillik, turşu, yanında patates tava ile servis edilir.</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Deluxe Burger</span><span class="product-price">450,00 ₺</span></div>
+                    <div class="product-description">Ev yapımı susamlı burger ekmeği arasında 150 gr. nefis burger köftesi, cheddar peyniri, karamelize soğan, domates, kıvırcık, turşu yanında patates tava ile servis edilir.</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Trend Burger</span><span class="product-price">450,00 ₺</span></div>
+                    <div class="product-description">Ev yapımı susamlı burger ekmeği arasında 150 gr. nefis burger köftesi, domates, kıvırcık, turşu yanında patates tava ile servis edilir.</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Steak Gurme Siyez Burger</span><span class="product-price">500,00 ₺</span></div>
+                    <div class="product-description">Ev yapımı susamlı burger ekmeği arasında 150 gr. Dana et, duble cheddar peyniri, karamelize soğan, domates, turşu, kıvırcık yanında baharatlı patates ile servis edilir.</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Meksika Burger</span><span class="product-price">500,00 ₺</span></div>
+                    <div class="product-description">Büyük boy burger ekmeği arasında 150 Gr. burger köftesi, cheddar peyniri, jalapeno biber, meksika fasulyesi neep sos yanında baharatlı patates ile servis edilir.</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="pizzalar" class="category-section">
+            <h2 class="category-title">🍕 Pizzalar</h2>
+            <div class="grid-container">
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Funghi Pizza</span><span class="product-price">450,00 ₺</span></div>
+                    <div class="product-description">Pizza hamur, domates sos, mozarella 260 mantar</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Tavuklu Pizza</span><span class="product-price">420,00 ₺</span></div>
+                    <div class="product-description">160 gr Tavuk dilimlenir, domates, biber, kaşar ile</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Tonbalıklı pizza</span><span class="product-price">450,00 ₺</span></div>
+                    <div class="product-description">Pizza hamuru domates sos, mozarella, mısır, zeytin, tonbalığı 250 gr tonbalığı</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Margarite Pizza</span><span class="product-price">400,00 ₺</span></div>
+                    <div class="product-description">El açması ince pizza hamuru üzerinde özel pizza sosu, mozerella peyniri, domates, fesleğenli sos ile servis edilir.</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Mix Pizza</span><span class="product-price">420,00 ₺</span></div>
+                    <div class="product-description">El açması ince pizza hamuru üzerinde özel pizza sosu, mozerella peyniri, sucuk, salam, sosis, mısır, zeytin, biber, domates ve kekik ile servis edilir.</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Dört Peynirli Pizza</span><span class="product-price">420,00 ₺</span></div>
+                    <div class="product-description">Funghi pizza, Funghi hamuru domates sos, mozarella 260gr. mantar</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Steak Pizza</span><span class="product-price">500,00 ₺</span></div>
+                    <div class="product-description">El Açması ince pizza hamuru üzerinde özel pizza sosu, mozerella peyniri, julyen et parçaları, sote renkli biberler ile servis edilir.</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Sucuklu Pizza</span><span class="product-price">450,00 ₺</span></div>
+                    <div class="product-description">El açması ile ince pizza hamuru üzerinde özel pizza sosu, mozerella peyniri ve sucuk ile servis edilir.</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="salatalar" class="category-section">
+            <h2 class="category-title">🥗 Salatalar</h2>
+            <div class="grid-container">
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Köfteli Salata</span><span class="product-price">450,00 ₺</span></div>
+                    <div class="product-description">Göbek eşliğinde kornişon turşu, kırmızı lahana, domates, salatalık 260 misket köfte, yağ, limon, sos ile</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Tonbalıklı Salata</span><span class="product-price">400,00 ₺</span></div>
+                    <div class="product-description">Göbek parçalayıp kırmızı lahana, mısır, domates, salatalık, tonbalığı 250gr</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Çoban Salata</span><span class="product-price">250,00 ₺</span></div>
+                    <div class="product-description">Domates, salatalık, maydonoz, soğan, yeşil biber, yağ, limon sosu ile servis edilir.</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Sezar Salata</span><span class="product-price">400,00 ₺</span></div>
+                    <div class="product-description">Göbek, marul, sezar sos, kroton ekmeği, mısır, domates, salatalık, ızgara tavuk parçaları, parmesan peyniri ile servis edilir.</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Çıtır Tavuk Salata</span><span class="product-price">400,00 ₺</span></div>
+                    <div class="product-description">Akdeniz yeşilliği, mısır, domates, salatalık, kırmızı lahana, çıtır tavuk parçaları, honey master sos ile servis edilir.</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Akdeniz Salata</span><span class="product-price">300,00 ₺</span></div>
+                    <div class="product-description">Akdeniz yeşilliği, beyaz peynir, mısır, domates, salatalık, sivri biber, siyah zeytin, yağ ve limon ile servis edilir.</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="makarnalar" class="category-section">
+            <h2 class="category-title">🍝 Makarnalar</h2>
+            <div class="grid-container">
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Fettucini Alfredo Makarna</span><span class="product-price">350,00 ₺</span></div>
+                    <div class="product-description">Fettucini makarna, mantar, julyen tavuk parçaları, pestolu kremalı sos, parmesan peyniri ile servis edilir.</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Panne Arabiataa</span><span class="product-price">350,00 ₺</span></div>
+                    <div class="product-description">Panne makarna, acı napoliten sos, dilim zeytin, Parmesan Peyniri ile servis edilir.</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Spaghetti Bolognese</span><span class="product-price">350,00 ₺</span></div>
+                    <div class="product-description">Spaghetti Makarna, özel hazırlanmış special kıyma sos, parmesan peyniri ile servis edilir.</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Kayseri Mantı</span><span class="product-price">350,00 ₺</span></div>
+                    <div class="product-description">Sarımsaklı Yoğurt ve biberli tereyağ ile servis edilir.</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Penne Alfredo Makarna</span><span class="product-price">350,00 ₺</span></div>
+                    <div class="product-description">Penne makarna mantar, julyen tavuk parçaları, pestolu kremalı sos, parmesan peyniri ile servis edilir.</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="beyaz-etler" class="category-section">
+            <h2 class="category-title">🍗 Ana Yemekler - Beyaz Etler</h2>
+            <div class="grid-container">
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Dağ Kekikli Piliç Izgara</span><span class="product-price">450,00 ₺</span></div>
+                    <div class="product-description">Izgara Tavuk Göğüs: Eti, Dağ Kekiği ile harm anlamış, yanında Pilav, Patates, köz biber, yeşillik ve domates ile servis edilir</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Köri Soslu Tavuk</span><span class="product-price">450,00 ₺</span></div>
+                    <div class="product-description">Julyen doğranmış tavuk parçaları, mantar, mısır, renkli biberler, özel körili kremalı sos ile harmanlanmış yanında pilav, patates ve yeşillik ile servis edilir.</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Schinitzel</span><span class="product-price">450,00 ₺</span></div>
+                    <div class="product-description">Özel hazırlanmış ve tereyağı ile marine edilmiş tavuk göğsü, yanında limon, pilav, patates ve yeşillik ile servis edilir</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Meksika Soslu Tavuk</span><span class="product-price">450,00 ₺</span></div>
+                    <div class="product-description">Özel hazırlanmış piliç pirzola, meksika sos, cheddar peyniri, kırmızı biber, yeşil biber ile pişirilmiş, yanında pilav, patates ve yeşillik ile servis edilir.</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Mashroom Soslu Tavuk</span><span class="product-price">450,00 ₺</span></div>
+                    <div class="product-description">Julyen doğranmış tavuk parçaları, mashroom sos, demigalos sos ile hazırlanmış, yanında pilav, patates ve yeşillik ile servis edilir.</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Tavuk Sote</span><span class="product-price">450,00 ₺</span></div>
+                    <div class="product-description">Küp küp doğranmış bonfile tavuk eti, renkli biberler, özel baharatlar ve soğan ile pişirilmiş yanında tortilla ekmeği pilav ve patates ile servis edilir.</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Diyet Tavuk Tabağı</span><span class="product-price">450,00 ₺</span></div>
+                    <div class="product-description">Brokoli, karnıbahar, ızgara tavuk ve yoğurt ile servis edilir.</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Barbekü Soslu Tavuk</span><span class="product-price">450,00 ₺</span></div>
+                    <div class="product-description">Julyen doğranmış tavuk parçaları, krema, mantar, barbekü sos ile yanında pilav patates ve yeşillik ile servis edilir.</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Tavuk Kanat bufallo</span><span class="product-price">450,00 ₺</span></div>
+                    <div class="product-description">6 parça tavuk kanat panebenmiş tavuk parçaları sivitchili sosla</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="kirmizi-etler" class="category-section">
+            <h2 class="category-title">🥩 Ana Yemekler - Kırmızı Etler</h2>
+            <div class="grid-container">
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Kaşarlı Köfte</span><span class="product-price">500,00 ₺</span></div>
+                    <div class="product-description">200gr özel dana etinde hazırlanmış köfte, ızgara biber, domates, patates, pilav lavaş ile köftenin üstüne rende kaşar</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Izgara Köfte</span><span class="product-price">500,00 ₺</span></div>
+                    <div class="product-description">200 gr. ızgara köfte, yanında köz biber, köz domates, yeşillik, pilav ve patates ile servis edilir.</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Dana Antrikot</span><span class="product-price">650,00 ₺</span></div>
+                    <div class="product-description">180 gr. dana antrikot, yanında köz biber, köz domates, yeşillik, pilav ve patates ile servis edilir.</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Sac Kavurma</span><span class="product-price">600,00 ₺</span></div>
+                    <div class="product-description">Küp küp doğranmış bonfile eti, renkli biberler, özel baharatlar ve soğan ile pişirilmiş yanında tortilla ekmeği, pilav ve patates ile servis edilir.</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Et Bonfile Mushroom</span><span class="product-price">750,00 ₺</span></div>
+                    <div class="product-description">260 gr. özel hazırlanmış soslu et, mantar, cheddar peyniri, pirinç pilavı, patates ile servis edilir.</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Mantar Soslu Bonfile</span><span class="product-price">600,00 ₺</span></div>
+                    <div class="product-description">Mantar Krema, brokoli, karnıbahar</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="pideler" class="category-section">
+            <h2 class="category-title">🫓 Pideler</h2>
+            <div class="grid-container">
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Kaşarlı Pide</span><span class="product-price">400,00 ₺</span></div>
+                    <div class="product-description">El açması hamuru ile beyaz peynir ve kaşarlı pide</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Karışık Pide</span><span class="product-price">400,00 ₺</span></div>
+                    <div class="product-description">El açması hamuru ile üzerinde sucuk, kaşar peyniri, renkli biberler ve mantar ile hazırlanır.</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Kavurmalı Kaşarlı Pide</span><span class="product-price">450,00 ₺</span></div>
+                    <div class="product-description">El açması hamuru ile üzerinde kavurma kaşar peyniri ile hazırlanır.</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Çikolatalı Pide</span><span class="product-price">400,00 ₺</span></div>
+                    <div class="product-description">El açması hamuru ile çikolata ve fındık ile hazırlanır.</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="corbalar" class="category-section">
+            <h2 class="category-title">🍲 Çorbalar</h2>
+            <div class="grid-container">
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Günün Çorbası</span><span class="product-price">150,00 ₺</span></div>
+                    <div class="product-description">(Personele Sorunuz)</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="borekler" class="category-section">
+            <h2 class="category-title">🥟 Börek Çeşitleri</h2>
+            <div class="grid-container">
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Kol Böreği</span><span class="product-price">170,00 ₺</span></div>
+                    <div class="product-description">Porsiyon servis edilir</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Su Böreği</span><span class="product-price">170,00 ₺</span></div>
+                    <div class="product-description">Porsiyon servis edilir</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Adana Böreği</span><span class="product-price">110,00 ₺</span></div>
+                    <div class="product-description">Porsiyon servis edilir</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Ispanaklı Böreği</span><span class="product-price">110,00 ₺</span></div>
+                    <div class="product-description">Porsiyon servis edilir</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="pogacalar" class="category-section">
+            <h2 class="category-title">🥐 Poğaça Çeşitleri</h2>
+            <div class="grid-container">
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Sade Poğaça</span><span class="product-price">25,00 ₺</span></div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Peynirli Poğaça</span><span class="product-price">25,00 ₺</span></div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Kaşarlı Poğaça</span><span class="product-price">25,00 ₺</span></div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Zeytinli Poğaça</span><span class="product-price">25,00 ₺</span></div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Patatesli Poğaça</span><span class="product-price">25,00 ₺</span></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="acmalar" class="category-section">
+            <h2 class="category-title">🥯 Açma Çeşitleri</h2>
+            <div class="grid-container">
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Sade Açma</span><span class="product-price">30,00 ₺</span></div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Peynirli Açma</span><span class="product-price">30,00 ₺</span></div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Patatesli Açma</span><span class="product-price">30,00 ₺</span></div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Çikolatalı Açma</span><span class="product-price">30,00 ₺</span></div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Kaşarlı Açma</span><span class="product-price">30,00 ₺</span></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="sandvicler" class="category-section">
+            <h2 class="category-title">🥪 Sandviç Çeşitleri</h2>
+            <div class="grid-container">
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Beyaz Peynirli Sandviç</span><span class="product-price">140,00 ₺</span></div>
+                    <div class="product-description">Kıvırcık, Çanakkale Domates, Çengelköy Salatalık, Beyaz Peynir ve sos ile servis edilir.</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Kaşarlı Sandviç</span><span class="product-price">140,00 ₺</span></div>
+                    <div class="product-description">Kıvırcık, Çanakkale Domates, Çengelköy Salatalık, Kaşar Peyniri, Macar Salamve sos ile servis edilir.</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Simit Sandviç</span><span class="product-price">150,00 ₺</span></div>
+                    <div class="product-description">Çıtır simit arasına isteğe göre Beyaz Peynir veya Kaşar peynir, Çanakkale Domates, Salatalık ile servis edilir.</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Mini Sandviç</span><span class="product-price">20,00 ₺</span></div>
+                    <div class="product-description">Küçük Sandviç ekmekleri arasına Kaşar Peyniri, Çanakkale Domates, Salatalık ile servis edilir.</div>
+                </div>
+                <div class="product-card">
+                    <div class="product-header"><span class="nav-item-name">Karışık Sandviç</span><span class="product-price">170,00 ₺</span></div>
+                    <div class="product-description">Sandviç Ekmeği arasına Kıvırcık, Çanakkale Domates Jambon, Salam, Kaşar Peyniri, Salatalık, Biber</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="sutlu-tatlilar" class="category-section">
+            <h2 class="category-title">🍮 Sütlü Tatlılar</h2>
+            <div class="grid-container">
+                <div class="product-card"><div class="product-header"><span class="nav-item-name">San Sebastian Cheesecake</span><span class="product-price">250,00 ₺</span></div><div class="product-description">Porsiyon servis edilir</div></div>
+                <div class="product-card"><div class="product-header"><span class="nav-item-name">Magnoliya</span><span class="product-price">250,00 ₺</span></div><div class="product-description">Porsiyon servis edilir</div></div>
+                <div class="product-card"><div class="product-header"><span class="nav-item-name">Profiterol</span><span class="product-price">250,00 ₺</span></div><div class="product-description">Porsiyon servis edilir</div></div>
+                <div class="product-card"><div class="product-header"><span class="nav-item-name">Spangle</span><span class="product-price">250,00 ₺</span></div><div class="product-description">Porsiyon servis edilir</div></div>
+                <div class="product-card"><div class="product-header"><span class="nav-item-name">Sütlaç</span><span class="product-price">250,00 ₺</span></div><div class="product-description">Porsiyon servis edilir</div></div>
+                <div class="product-card"><div class="product-header"><span class="nav-item-name">Kazandibi</span><span class="product-price">250,00 ₺</span></div><div class="product-description">Porsiyon servis edilir</div></div>
+                <div class="product-card"><div class="product-header"><span class="nav-item-name">Tavuk Göğsü</span><span class="product-price">250,00 ₺</span></div><div class="product-description">Porsiyon servis edilir</div></div>
+                <div class="product-card"><div class="product-header"><span class="nav-item-name">Muhallebi</span><span class="product-price">250,00 ₺</span></div><div class="product-description">Porsiyon servis edilir</div></div>
+                <div class="product-card"><div class="product-header"><span class="nav-item-name">Triliçe</span><span class="product-price">250,00 ₺</span></div><div class="product-description">Porsiyon servis edilir</div></div>
+                <div class="product-card"><div class="product-header"><span class="nav-item-name">Islak Kek</span><span class="product-price">250,00 ₺</span></div><div class="product-description">Porsiyon servis edilir</div></div>
+            </div>
+        </section>
+
+        <section id="dilim-pastalar" class="category-section">
+            <h2 class="category-title">🍰 Dilim Pastalar</h2>
+            <div class="grid-container">
+                <div class="product-card"><div class="product-header"><span class="nav-item-name">Grand Tek Pasta</span><span class="product-price">250,00 ₺</span></div><div class="product-description">Porsiyon servis edilir</div></div>
+                <div class="product-card"><div class="product-header"><span class="nav-item-name">Figürlü Tek Pasta</span><span class="product-price">250,00 ₺</span></div><div class="product-description">Porsiyon servis edilir</div></div>
+                <div class="product-card"><div class="product-header"><span class="nav-item-name">Magnolia</span><span class="product-price">250,00 ₺</span></div><div class="product-description">Porsiyon servis edilir</div></div>
+                <div class="product-card"><div class="product-header"><span class="nav-item-name">Mois</span><span class="product-price">250,00 ₺</span></div><div class="product-description">Porsiyon servis edilir</div></div>
+                <div class="product-card"><div class="product-header"><span class="nav-item-name">Mozaik</span><span class="product-price">250,00 ₺</span></div><div class="product-description">Porsiyon servis edilir</div></div>
+                <div class="product-card"><div class="product-header"><span class="nav-item-name">Sufle</span><span class="product-price">250,00 ₺</span></div><div class="product-description">Porsiyon servis edilir</div></div>
+                <div class="product-card"><div class="product-header"><span class="nav-item-name">Tiramisu</span><span class="product-price">250,00 ₺</span></div><div class="product-description">Porsiyon servis edilir</div></div>
+                <div class="product-card"><div class="product-header"><span class="nav-item-name">Cheesecake</span><span class="product-price">250,00 ₺</span></div><div class="product-description">Porsiyon servis edilir</div></div>
+                <div class="product-card"><div class="product-header"><span class="nav-item-name">Rulo Sarma Tek Pasta</span><span class="product-price">250,00 ₺</span></div><div class="product-description">Porsiyon servis edilir</div></div>
+                <div class="product-card"><div class="product-header"><span class="nav-item-name">Waffle</span><span class="product-price">250,00 ₺</span></div><div class="product-description">Porsiyon servis edilir</div></div>
+            </div>
+        </section>
+
+        <section id="baklavalar" class="category-section">
+            <h2 class="category-title">🥮 Baklava Çeşitleri</h2>
+            <div class="grid-container">
+                <div class="product-card"><div class="product-header"><span class="nav-item-name">Soğuk Baklava (3 Adet)</span><span class="product-price">250,00 ₺</span></div><div class="product-description">Porsiyon servis edilir</div></div>
+                <div class="product-card"><div class="product-header"><span class="nav-item-name">Fıstıklı Baklava (3 Adet)</span><span class="product-price">250,00 ₺</span></div><div class="product-description">Porsiyon servis edilir</div></div>
+                <div class="product-card"><div class="product-header"><span class="nav-item-name">Şöbiyet (3 Adet)</span><span class="product-price">250,00 ₺</span></div><div class="product-description">Porsiyon servis edilir</div></div>
+                <div class="product-card"><div class="product-header"><span class="nav-item-name">Cevizli Baklava (3 Adet)</span><span class="product-price">250,00 ₺</span></div><div class="product-description">Porsiyon servis edilir</div></div>
+                <div class="product-card"><div class="product-header"><span class="nav-item-name">Sütlü Nuriye (3 Adet)</span><span class="product-price">200,00 ₺</span></div><div class="product-description">Porsiyon servis edilir</div></div>
+                <div class="product-card"><div class="product-header"><span class="nav-item-name">Şekerpare (3 Adet)</span><span class="product-price">200,00 ₺</span></div><div class="product-description">Porsiyon servis edilir</div></div>
+                <div class="product-card"><div class="product-header"><span class="nav-item-name">Tulumba (3 Adet)</span><span class="product-price">150,00 ₺</span></div><div class="product-description">Porsiyon servis edilir</div></div>
+                <div class="product-card"><div class="product-header"><span class="nav-item-name">Kadayıf</span><span class="product-price">300,00 ₺</span></div><div class="product-description">Porsiyon servis edilir</div></div>
+                <div class="product-card"><div class="product-header"><span class="nav-item-name">Künefe</span><span class="product-price">350,00 ₺</span></div><div class="product-description">Porsiyon servis edilir</div></div>
+            </div>
+        </section>
+
+        <section id="kurabiyeler" class="category-section">
+            <h2 class="category-title">🍪 Kurabiye Çeşitleri</h2>
+            <div class="grid-container">
+                <div class="product-card"><div class="product-header"><span class="nav-item-name">Kurabiye Çeşitleri (6 Adet)</span><span class="product-price">200,00 ₺</span></div><div class="product-description">Porsiyon servis edilir</div></div>
+                <div class="product-card"><div class="product-header"><span class="nav-item-name">Ekler (6 Adet)</span><span class="product-price">200,00 ₺</span></div><div class="product-description">Porsiyon servis edilir</div></div>
+                <div class="product-card"><div class="product-header"><span class="nav-item-name">Tartelet (6 Adet)</span><span class="product-price">200,00 ₺</span></div><div class="product-description">Porsiyon servis edilir</div></div>
+                <div class="product-card"><div class="product-header"><span class="nav-item-name">Mini Rulo Sarma (6 Adet)</span><span class="product-price">200,00 ₺</span></div><div class="product-description">Porsiyon servis edilir</div></div>
+            </div>
+        </section>
+
+        <section id="soguk-icecekler" class="category-section">
+            <h2 class="category-title">🥤 Soğuk İçecekler</h2>
+            <div class="grid-container">
+                <div class="product-card"><div class="product-header"><span class="nav-item-name">Coco Cola</span><span class="product-price">70,00 ₺</span></div></div>
+                <div class="product-card"><div class="product-header"><span class="nav-item-name">Fatna</span><span class="product-price">70,00 ₺</span></div></div>
+                <div class="product-card"><div class="product-header"><span class="nav-item-name">Sprite</span><span class="product-price">70,00 ₺</span></div></div>
+                <div class="product-card"><div class="product-header"><span class="nav-item-name">Ice Tea</span><span class="product-price">70,00 ₺</span></div></div>
+                <div class="product-card"><div class="product-header"><span class="nav-item-name">Meyve Suyu</span><span class="product-price">70,00 ₺</span></div></div>
+                <div class="product-card"><div class="product-header"><span class="nav-item-name">K. Meyve Suyu</span><span class="product-price">35,00 ₺</span></div></div>
+                <div class="product-card"><div class="product-header"><span class="nav-item-name">Ayran</span><span class="product-price">60,00 ₺</span></div></div>
+                <div class="product-card"><div class="product-header"><span class="nav-item-name">Soda (sade)</span><span class="product-price">40,00 ₺</span></div></div>
+                <div class="product-card"><div class="product-header"><span class="nav-item-name">Soda (meyveli)</span><span class="product-price">50,00 ₺</span></div></div>
+                <div class="product-card"><div class="product-header"><span class="nav-item-name">Atom</span><span class="product-price">250,00 ₺</span></div></div>
+                <div class="product-card"><div class="product-header"><span class="nav-item-name">Red Bull</span><span class="product-price">250,00 ₺</span></div></div>
+                <div class="product-card"><div class="product-header"><span class="nav-item-name">Limonata</span><span class="product-price">250,00 ₺</span></div></div>
+                <div class="product-card"><div class="product-header"><span class="nav-item-name">Sıkma Portakal Suyu</span><span class="product-price">250,00 ₺</span></div></div>
+                <div class="product-card"><div class="product-header"><span class="nav-item-name">Su</span><span class="product-price">20,00 ₺</span></div></div>
+            </div>
+        </section>
+
+        <section id="sicak-icecekler" class="category-section">
+            <h2 class="category-title">☕ Sıcak İçecekler</h2>
+            <div class="grid-container">
+                <div class="product-card"><div class="product-header"><span class="nav-item-name">Çay</span><span class="product-price">40,00 ₺</span></div></div>
+                <div class="product-card"><div class="product-header"><span class="nav-item-name">B.Çay</span><span class="product-price">70,00 ₺</span></div></div>
+                <div class="product-card"><div class="product-header"><span class="nav-item-name">Türk Kahvesi</span><span class="product-price">150,00 ₺</span></div></div>
+                <div class="product-card"><div class="product-header"><span class="nav-item-name">Nescafe</span><span class="product-price">150,00 ₺</span></div></div>
+                <div class="product-card"><div class="product-header"><span class="nav-item-name">Sade Nescafe</span><span class="product-price">120,00 ₺</span></div></div>
+                <div class="product-card"><div class="product-header"><span class="nav-item-name">Sıcak Süt Ballı</span><span class="product-price">150,00 ₺</span></div></div>
+                <div class="product-card"><div class="product-header"><span class="nav-item-name">Filtre Kahve</span><span class="product-price">250,00 ₺</span></div></div>
+                <div class="product-card"><div class="product-header"><span class="nav-item-name">Bitki Çayları</span><span class="product-price">250,00 ₺</span></div></div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.category-section');
+            const navItems = document.querySelectorAll('.nav-item');
+            const nav = document.getElementById('categoryNav');
+
+            // Kaydırma takibi ve aktif sınıf yönetimi
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    if (pageYOffset >= (sectionTop - 80)) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navItems.forEach(item => {
+                    item.classList.remove('active');
+                    if (item.getAttribute('href') === `#${current}`) {
+                        item.classList.add('active');
+                        
+                        // Aktif kategoriyi yatay menüde ortala
+                        const navContainer = item.parentElement;
+                        const scrollLeft = item.offsetLeft - (window.innerWidth / 2) + (item.clientWidth / 2);
+                        nav.scrollTo({
+                            left: scrollLeft,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+
+            // Menü öğelerine tıklama performansı
+            navItems.forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = item.getAttribute('href');
+                    const targetSection = document.querySelector(targetId);
+                    if (targetSection) {
+                        window.scrollTo({
+                            top: targetSection.offsetTop - 70,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
